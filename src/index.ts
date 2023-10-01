@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 import app from "./app";
-import startDatabase from "partipro-shared/core/connection";
+import startDatabase from "partipro-shared/src/core/connection";
 
 startDatabase()
   .then(() => {
