@@ -1,0 +1,30 @@
+{
+  "name": "partipro-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src",
+  "scripts": {
+    "start": "TZ=UTC npx ts-node src/index.ts --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "workspaces": [
+    "shared/partipro-shared"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.4",
+    "@types/express": "^4.17.18",
+    "@types/node": "^20.8.0",
+    "prettier": "^3.0.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.5.3"
+  }
+}
