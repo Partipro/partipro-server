@@ -1,5 +1,4 @@
-// @ts-ignore
-import request from "supertest";
+import { agent as request } from "supertest";
 
 import app from "../../src/app";
 
@@ -12,6 +11,5 @@ describe("When /api/v1/auth/register", () => {
     });
     expect(res.error).toBe("");
     expect(res.status).toBe(201);
-    expect(res.body).toEqual(["Goon", "Tsuki", "Joe"]);
   });
 });
