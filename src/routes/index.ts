@@ -5,6 +5,6 @@ import authenticationRoute from "./authentication.route";
 
 const router = Router({ mergeParams: true });
 
-router.use("/", authenticationRoute);
+router.use(authenticationRoute);
 
 export default router;
