@@ -11,5 +11,5 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "exclude": ["shared", "build"]
+  "exclude": ["shared", "build", "**/*.test.ts", "jest.config.js", "coverage"],
 }
