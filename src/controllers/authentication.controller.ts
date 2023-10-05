@@ -28,7 +28,7 @@ class AuthenticationController extends AuthenticationService {
     const insertedUser = await this.authenticationService.insert(props);
 
     if (!insertedUser) {
-      throw new BadRequestError("error_creating_user", "Error creating user.");
+      throw new BadRequestError("error_creating_user", "Erro ao criar usuário.");
     }
 
     return this.authenticationService.generateToken(insertedUser._id);
@@ -45,7 +45,7 @@ class AuthenticationController extends AuthenticationService {
       throw new NotFoundError("user_not_found", "Não foi possível encontrar este usuário.");
     }
 
-    const isPasswordMatch = await user.comparePassword(password);
+    const isPasswordMatch = await this.authenticationService.comparePassword(password, user.password);
 
     if (isPasswordMatch) {
       return this.authenticationService.generateToken(user._id);
