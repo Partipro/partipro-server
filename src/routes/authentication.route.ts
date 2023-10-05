@@ -26,7 +26,7 @@ authenticationRoute.post(
         secure: process.env.NODE_ENV === "production",
         expires: dayjs().add(3, "days").toDate(),
       })
-      .status(httpStatusCodes.CREATED)
+      .status(httpStatusCodes.OK)
       .json({
         token,
       });
