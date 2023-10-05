@@ -1,7 +1,10 @@
-import BadRequestError from "partipro-shared/src/errors/BadRequestError";
-import AuthenticationService from "partipro-shared/src/services/authentication.service";
 import { IUser } from "partipro-shared/src/models/user/user.interface";
 import UserRepository from "partipro-shared/src/repositories/user.repository";
+import AuthenticationService from "partipro-shared/src/services/authentication.service";
+
+import NotFoundError from "partipro-shared/src/errors/NotFoundError";
+import BadRequestError from "partipro-shared/src/errors/BadRequestError";
+import UnauthorizedError from "../../shared/partipro-shared/src/errors/UnauthorizedError";
 
 class AuthenticationController extends AuthenticationService {
   private authenticationService: AuthenticationService;
@@ -11,7 +14,7 @@ class AuthenticationController extends AuthenticationService {
     this.authenticationService = authService;
   }
 
-  async register(props: IUser): Promise<IUser> {
+  async register(props: IUser): Promise<string> {
     const user = await this.authenticationService.findOne({
       filters: {
         email: props.email,
@@ -22,16 +25,33 @@ class AuthenticationController extends AuthenticationService {
       throw new BadRequestError("user_found", "Este email já existe");
     }
 
-    return this.authenticationService.insert(props);
+    const insertedUser = await this.authenticationService.insert(props);
+
+    if (!insertedUser) {
+      throw new BadRequestError("error_creating_user", "Error creating user.");
+    }
+
+    return this.authenticationService.generateToken(insertedUser);
   }
 
-  async login({ email, password }: { email: string; password: string }): Promise<IUser> {
+  async login({ email, password }: { email: string; password: string }): Promise<string> {
     const user = await this.authenticationService.findOne({
       filters: {
         email,
       },
     });
-    return user;
+
+    if (!user) {
+      throw new NotFoundError("user_not_found", "Não foi possível encontrar este usuário.");
+    }
+
+    const isPasswordMatch = await user.comparePassword(password);
+
+    if (isPasswordMatch) {
+      return this.authenticationService.generateToken(user);
+    } else {
+      throw new UnauthorizedError("incorrect_password", "Senha incorreta.");
+    }
   }
 }
 

@@ -6,7 +6,7 @@ import WrapAsync from "partipro-shared/src/middlewares/WrapAsync";
 import BodyHandler from "partipro-shared/src/middlewares/BodyHandler";
 import { httpStatusCodes } from "partipro-shared/src/constants";
 
-import authenticationCotroller from "../controllers/authentication.controller";
+import authenticationController from "../controllers/authentication.controller";
 
 const authenticationRoute = express.Router();
 
@@ -19,8 +19,7 @@ authenticationRoute.post(
     }),
   ),
   WrapAsync(async (req, res) => {
-    const user = await authenticationCotroller.login(req.body);
-    const token = await authenticationCotroller.generateToken(user);
+    const token = await authenticationController.login(req.body);
     res
       .cookie("ccToken", token, {
         httpOnly: true,
@@ -29,7 +28,6 @@ authenticationRoute.post(
       })
       .status(httpStatusCodes.CREATED)
       .json({
-        id: user._id,
         token,
       });
   }),
@@ -45,8 +43,7 @@ authenticationRoute.post(
     }),
   ),
   WrapAsync(async (req, res) => {
-    const user = await authenticationCotroller.register(req.body);
-    const token = await authenticationCotroller.generateToken(user);
+    const token = await authenticationController.register(req.body);
 
     res
       .cookie("ccToken", token, {
@@ -56,7 +53,6 @@ authenticationRoute.post(
       })
       .status(httpStatusCodes.CREATED)
       .json({
-        id: user._id,
         token,
       });
   }),
