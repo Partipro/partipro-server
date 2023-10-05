@@ -31,7 +31,7 @@ class AuthenticationController extends AuthenticationService {
       throw new BadRequestError("error_creating_user", "Error creating user.");
     }
 
-    return this.authenticationService.generateToken(insertedUser);
+    return this.authenticationService.generateToken(insertedUser._id);
   }
 
   async login({ email, password }: { email: string; password: string }): Promise<string> {
@@ -48,7 +48,7 @@ class AuthenticationController extends AuthenticationService {
     const isPasswordMatch = await user.comparePassword(password);
 
     if (isPasswordMatch) {
-      return this.authenticationService.generateToken(user);
+      return this.authenticationService.generateToken(user._id);
     } else {
       throw new UnauthorizedError("incorrect_password", "Senha incorreta.");
     }
