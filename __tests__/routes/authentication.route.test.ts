@@ -3,7 +3,7 @@ import { agent as request } from "supertest";
 import app from "../../src/app";
 import User from "partipro-shared/src/models/user/user.model";
 
-describe("When /api/v1/auth/register", () => {
+describe("When POST /api/v1/auth/register", () => {
   test("Should return status 201 and token when trying to register a user with correct information", async () => {
     const res = await request(app).post("/api/v1/auth/register").send({
       email: "test@jest.com",
@@ -40,7 +40,7 @@ describe("When /api/v1/auth/register", () => {
   });
 });
 
-describe("When /api/v1/auth", () => {
+describe("When POST /api/v1/auth", () => {
   beforeEach(async () => {
     await request(app).post("/api/v1/auth/register").send({
       email: "test@jest.com",
