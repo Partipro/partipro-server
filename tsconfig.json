@@ -7,9 +7,11 @@
     "outDir": "build",
     "rootDir": "src",
     "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "useUnknownInCatchVariables": false,
     "noImplicitAny": true,
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "exclude": ["shared", "build", "**/*.test.ts", "jest.config.js", "coverage"],
+  "exclude": ["shared", "build", "**/*.test.ts", "jest.config.js", "coverage"]
 }
