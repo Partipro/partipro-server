@@ -13,5 +13,6 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "exclude": ["shared", "build", "**/*.test.ts", "jest.config.js", "coverage"]
+  "exclude": ["shared", "build", "**/*.test.ts", "jest.config.js", "coverage"],
+  "files": ["./src/types/express/index.d.ts"]
 }
