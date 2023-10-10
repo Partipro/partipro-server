@@ -12,7 +12,6 @@ userRoute.get(
   WrapAsync(async (req, res) => {
     const user = await userController.findById(req.user.id, {});
 
-    console.log(user);
     if (!user) {
       throw new NotFoundError("user_not_found", "Usuário não encontrado");
     }
