@@ -1,3 +1,5 @@
 import UserService from "partipro-shared/src/services/user.service";
 
-export default Object.assign({}, UserService);
+class UserController extends UserService {}
+
+export default new UserController();
