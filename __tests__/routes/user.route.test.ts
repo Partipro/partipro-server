@@ -5,7 +5,7 @@ import app from "../../src/app";
 
 describe("When GET /api/v1/users", () => {
   test("Should return status 200 and the user when authenticated", async () => {
-    const res = await request("get", "users");
+    const res = await request("get", "users", {});
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual(
