@@ -4,7 +4,7 @@ import AuthenticationService from "partipro-shared/src/services/authentication.s
 
 import NotFoundError from "partipro-shared/src/errors/NotFoundError";
 import BadRequestError from "partipro-shared/src/errors/BadRequestError";
-import UnauthorizedError from "../../shared/partipro-shared/src/errors/UnauthorizedError";
+import UnauthorizedError from "partipro-shared/src/errors/UnauthorizedError";
 
 class AuthenticationController extends AuthenticationService {
   private authenticationService: AuthenticationService;
