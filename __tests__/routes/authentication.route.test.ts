@@ -46,6 +46,17 @@ describe("When POST /api/v1/auth/register", () => {
     expect(res.status).toBe(400);
     expect(res.body.error.message).toBe('"email" is required');
   });
+
+  test("Should return status 400 when trying to register a user with invalid plan_hs_sku", async () => {
+    const res = await request(app).post("/api/v1/auth/register").send({
+      password: "123",
+      email: "sjdno@pdif.com",
+      name: "Jest Test",
+      plan_hs_sku: "NOT_VALID",
+    });
+    expect(res.status).toBe(400);
+    expect(res.body.error.message).toBe('"plan_hs_sku" must be one of [FREE, STANDARD]');
+  });
 });
 
 describe("When POST /api/v1/auth", () => {
