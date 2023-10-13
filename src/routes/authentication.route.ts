@@ -7,6 +7,7 @@ import BodyHandler from "partipro-shared/src/middlewares/BodyHandler";
 import { httpStatusCodes } from "partipro-shared/src/constants";
 
 import authenticationController from "../controllers/authentication.controller";
+import { PlanHsSku } from "partipro-shared/src/models/plan/plan.interface";
 
 const authenticationRoute = express.Router();
 
@@ -40,6 +41,7 @@ authenticationRoute.post(
       email: Joi.string().email().trim().required(),
       password: Joi.string().required(),
       name: Joi.string().required(),
+      plan_hs_sku: Joi.string().valid(...Object.values(PlanHsSku)),
     }),
   ),
   WrapAsync(async (req, res) => {
