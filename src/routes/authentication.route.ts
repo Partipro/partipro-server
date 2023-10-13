@@ -41,7 +41,9 @@ authenticationRoute.post(
       email: Joi.string().email().trim().required(),
       password: Joi.string().required(),
       name: Joi.string().required(),
-      plan_hs_sku: Joi.string().valid(...Object.values(PlanHsSku)),
+      plan_hs_sku: Joi.string()
+        .valid(...Object.values(PlanHsSku))
+        .default(PlanHsSku.FREE),
     }),
   ),
   WrapAsync(async (req, res) => {
