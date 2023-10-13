@@ -2,28 +2,36 @@ import request from "../request";
 import User from "partipro-shared/src/models/user/user.model";
 import Property from "partipro-shared/src/models/property/property.model";
 import { IDS } from "partipro-shared/__tests__/setupData";
+import Contract from "../../shared/partipro-shared/src/models/contract/contract.model";
 
 describe("when GET /api/v1/properties", () => {
   beforeEach(async () => {
+    const contract1 = await new Contract({
+      plan: IDS.PLAN,
+    }).save();
     const user1 = await new User({
       name: "User 1",
       password: "123",
       email: "user1@test.com",
+      contract: contract1._id,
     }).save();
     await new Property({
       owner: user1._id,
+      contract: user1.contract,
       name: "Property of user 1",
       deleted: false,
       address: "There",
     }).save();
     await new Property({
       owner: IDS.USER,
+      contract: IDS.CONTRACT,
       name: "Property of mine",
       deleted: false,
       address: "There",
     }).save();
     await new Property({
       owner: IDS.USER,
+      contract: IDS.CONTRACT,
       name: "Property of mine 2",
       address: "There",
       deleted: false,
