@@ -2,9 +2,17 @@ import { agent as request } from "supertest";
 
 import app from "../../src/app";
 import User from "partipro-shared/src/models/user/user.model";
+import Plan from "partipro-shared/src/models/plan/plan.model";
+import { PlanHsSku } from "partipro-shared/src/models/plan/plan.interface";
 
 describe("When POST /api/v1/auth/register", () => {
   test("Should return status 201 and token when trying to register a user with correct information", async () => {
+    await new Plan({
+      name: "grátis",
+      hs_sku: PlanHsSku.FREE,
+      price: 0,
+    }).save();
+
     const res = await request(app).post("/api/v1/auth/register").send({
       email: "test@jest.com",
       password: "123",
