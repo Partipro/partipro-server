@@ -17,6 +17,19 @@ const schema = Joi.object({
   name: Joi.string().required(),
 });
 
+propertyRoute.get(
+  "/properties",
+  WrapAsync(async (req, res) => {
+    res.status(httpStatusCodes.OK).json(
+      await propertyController.list({
+        filters: {
+          owner: req.user.id,
+        },
+      }),
+    );
+  }),
+);
+
 propertyRoute.post(
   "/properties",
   BodyHandler(schema),
