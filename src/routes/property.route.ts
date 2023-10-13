@@ -34,7 +34,7 @@ propertyRoute.post(
   "/properties",
   BodyHandler(schema),
   WrapAsync(async (req, res) => {
-    const property = await propertyController.insert({ ...req.body, owner: req.user.id });
+    const property = await propertyController.insert({ ...req.body, owner: req.user.id, contract: req.user.contract });
 
     res.status(httpStatusCodes.CREATED).json(property);
   }),
