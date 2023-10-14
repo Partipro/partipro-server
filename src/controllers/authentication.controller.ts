@@ -1,9 +1,11 @@
+import mongoose from "mongoose";
+
 import { IUser } from "partipro-shared/src/models/user/user.interface";
 import UserRepository from "partipro-shared/src/repositories/user.repository";
 import AuthenticationService from "partipro-shared/src/services/authentication.service";
 import ContractService from "partipro-shared/src/services/contract.service";
-import PlanService from "partipro-shared/src/services/plan.service";
 
+import PlanService from "partipro-shared/src/services/plan.service";
 import NotFoundError from "partipro-shared/src/errors/NotFoundError";
 import BadRequestError from "partipro-shared/src/errors/BadRequestError";
 import UnauthorizedError from "partipro-shared/src/errors/UnauthorizedError";
@@ -21,7 +23,10 @@ class AuthenticationController extends AuthenticationService {
     this.planService = planService;
   }
 
-  async register(props: IUser & { plan_hs_sku: PlanHsSku }): Promise<string> {
+  async register(
+    props: IUser & { plan_hs_sku: PlanHsSku },
+    { session }: { session: mongoose.mongo.ClientSession },
+  ): Promise<string> {
     const user = await this.authenticationService.findOne({
       filters: {
         email: props.email,
@@ -42,15 +47,25 @@ class AuthenticationController extends AuthenticationService {
       throw new BadRequestError("plan_not_found", "Plano não encontrado");
     }
 
-    const contract = await this.contractService.insert({
-      socialReason: `Empresa de ${props.email}`,
-      plan: plan._id,
-    });
+    const contract = await this.contractService.insert(
+      {
+        socialReason: `Empresa de ${props.email}`,
+        plan: plan._id,
+      },
+      { session },
+    );
 
-    const insertedUser = await this.authenticationService.insert({
-      ...props,
-      ...(contract?._id && { contract: contract._id }),
-    });
+    if (1 + 1 === 2) {
+      throw new BadRequestError("should_rollback", "should rollback contract");
+    }
+
+    const insertedUser = await this.authenticationService.insert(
+      {
+        ...props,
+        ...(contract?._id && { contract: contract._id }),
+      },
+      { session },
+    );
 
     if (!insertedUser) {
       throw new BadRequestError("error_creating_user", "Erro ao criar usuário.");

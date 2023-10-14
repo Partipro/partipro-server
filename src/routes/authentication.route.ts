@@ -4,10 +4,12 @@ import dayjs from "dayjs";
 
 import WrapAsync from "partipro-shared/src/middlewares/WrapAsync";
 import BodyHandler from "partipro-shared/src/middlewares/BodyHandler";
+import WrapTransactionAsync from "partipro-shared/src/middlewares/WrapTransactionAsync";
+
 import { httpStatusCodes } from "partipro-shared/src/constants";
+import { PlanHsSku } from "partipro-shared/src/models/plan/plan.interface";
 
 import authenticationController from "../controllers/authentication.controller";
-import { PlanHsSku } from "partipro-shared/src/models/plan/plan.interface";
 
 const authenticationRoute = express.Router();
 
@@ -46,8 +48,8 @@ authenticationRoute.post(
         .default(PlanHsSku.FREE),
     }),
   ),
-  WrapAsync(async (req, res) => {
-    const token = await authenticationController.register(req.body);
+  WrapTransactionAsync(async (req, res, session) => {
+    const token = await authenticationController.register(req.body, { session });
 
     res
       .cookie("ccToken", token, {
