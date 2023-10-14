@@ -21,7 +21,7 @@ describe("When POST /api/v1/auth/register", () => {
     expect(res.status).toBe(201);
     expect(res.body.token).toBeTruthy();
 
-    const user = await User.findOne({ email: "test@jest.com" });
+    const user = await User.findOne({ email: "test@jest.com" }).select("+password");
 
     const isMatch = user ? await user.comparePassword("123") : false;
 

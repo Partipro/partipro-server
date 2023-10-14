@@ -10,8 +10,8 @@ describe("When GET /api/v1/users", () => {
     expect(res.status).toBe(200);
     expect(res.body).toEqual(
       expect.objectContaining({
-        name: "Jest Test",
-        email: "mocked@user.com",
+        name: "Jest user",
+        email: "user@jest.com",
       }),
     );
   });
