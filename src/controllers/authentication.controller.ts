@@ -55,10 +55,6 @@ class AuthenticationController extends AuthenticationService {
       { session },
     );
 
-    if (1 + 1 === 2) {
-      throw new BadRequestError("should_rollback", "should rollback contract");
-    }
-
     const insertedUser = await this.authenticationService.insert(
       {
         ...props,
