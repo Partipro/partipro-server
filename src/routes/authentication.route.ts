@@ -2,6 +2,7 @@ import Joi from "joi";
 import express from "express";
 import dayjs from "dayjs";
 
+import Auth from "partipro-shared/src/middlewares/Auth";
 import WrapAsync from "partipro-shared/src/middlewares/WrapAsync";
 import BodyHandler from "partipro-shared/src/middlewares/BodyHandler";
 import WrapTransactionAsync from "partipro-shared/src/middlewares/WrapTransactionAsync";
@@ -61,6 +62,14 @@ authenticationRoute.post(
       .json({
         token,
       });
+  }),
+);
+
+authenticationRoute.get(
+  "/auth/logout",
+  Auth,
+  WrapAsync(async (req, res) => {
+    res.status(200).clearCookie("ccToken").send("Token cleared from the cookies.");
   }),
 );
 
