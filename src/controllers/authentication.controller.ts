@@ -75,6 +75,7 @@ class AuthenticationController extends AuthenticationService {
       filters: {
         email,
       },
+      select: "+password",
     });
 
     if (!user) {
