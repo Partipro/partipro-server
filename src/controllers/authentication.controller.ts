@@ -67,7 +67,7 @@ class AuthenticationController extends AuthenticationService {
       throw new BadRequestError("error_creating_user", "Erro ao criar usuário.");
     }
 
-    return this.authenticationService.generateToken(insertedUser._id);
+    return this.authenticationService.generateToken(insertedUser._id, { session });
   }
 
   async login({ email, password }: { email: string; password: string }): Promise<string> {
