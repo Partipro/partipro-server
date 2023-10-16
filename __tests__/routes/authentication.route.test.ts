@@ -2,9 +2,17 @@ import { agent as request } from "supertest";
 
 import app from "../../src/app";
 import User from "partipro-shared/src/models/user/user.model";
+import Plan from "partipro-shared/src/models/plan/plan.model";
+import { PlanHsSku } from "partipro-shared/src/models/plan/plan.interface";
 
 describe("When POST /api/v1/auth/register", () => {
   test("Should return status 201 and token when trying to register a user with correct information", async () => {
+    await new Plan({
+      name: "grátis",
+      hs_sku: PlanHsSku.FREE,
+      price: 0,
+    }).save();
+
     const res = await request(app).post("/api/v1/auth/register").send({
       email: "test@jest.com",
       password: "123",
@@ -13,7 +21,7 @@ describe("When POST /api/v1/auth/register", () => {
     expect(res.status).toBe(201);
     expect(res.body.token).toBeTruthy();
 
-    const user = await User.findOne({ email: "test@jest.com" });
+    const user = await User.findOne({ email: "test@jest.com" }).select("+password");
 
     const isMatch = user ? await user.comparePassword("123") : false;
 
@@ -37,6 +45,17 @@ describe("When POST /api/v1/auth/register", () => {
     });
     expect(res.status).toBe(400);
     expect(res.body.error.message).toBe('"email" is required');
+  });
+
+  test("Should return status 400 when trying to register a user with invalid plan_hs_sku", async () => {
+    const res = await request(app).post("/api/v1/auth/register").send({
+      password: "123",
+      email: "sjdno@pdif.com",
+      name: "Jest Test",
+      plan_hs_sku: "NOT_VALID",
+    });
+    expect(res.status).toBe(400);
+    expect(res.body.error.message).toBe('"plan_hs_sku" must be one of [FREE, STANDARD]');
   });
 });
 
