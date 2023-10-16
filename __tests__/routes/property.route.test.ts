@@ -3,6 +3,7 @@ import User from "partipro-shared/src/models/user/user.model";
 import Property from "partipro-shared/src/models/property/property.model";
 import { IDS } from "partipro-shared/__tests__/setupData";
 import Contract from "../../shared/partipro-shared/src/models/contract/contract.model";
+import { PropertyType } from "../../shared/partipro-shared/src/models/property/property.interface";
 
 describe("when GET /api/v1/properties", () => {
   beforeEach(async () => {
@@ -19,6 +20,7 @@ describe("when GET /api/v1/properties", () => {
       owner: user1._id,
       contract: user1.contract,
       name: "Property of user 1",
+      type: PropertyType.RESIDENTIAL,
       deleted: false,
       address: "There",
     }).save();
@@ -28,12 +30,14 @@ describe("when GET /api/v1/properties", () => {
       name: "Property of mine",
       deleted: false,
       address: "There",
+      type: PropertyType.COMMERCIAL,
     }).save();
     await new Property({
       owner: IDS.USER,
       contract: IDS.CONTRACT,
       name: "Property of mine 2",
       address: "There",
+      type: PropertyType.RESIDENTIAL,
       deleted: false,
     }).save();
   });
@@ -78,6 +82,7 @@ describe("When POST /api/v1/properties", () => {
         city: "Itajaí",
         monthRent: 300,
         squareMeters: 60,
+        type: PropertyType.COMMERCIAL,
       },
     });
 
@@ -88,6 +93,7 @@ describe("When POST /api/v1/properties", () => {
         name: "St. test",
         address: "304 street n. 10",
         city: "Itajaí",
+        type: PropertyType.COMMERCIAL,
         monthRent: 300,
         squareMeters: 60,
       }),
