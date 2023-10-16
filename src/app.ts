@@ -13,7 +13,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use("/api/v1", cors(), router);
+app.use(
+  "/api/v1",
+  cors({
+    credentials: true,
+    origin: ["http://localhost:5173"],
+  }),
+  router,
+);
 
 app.use(ErrorHandler);
 

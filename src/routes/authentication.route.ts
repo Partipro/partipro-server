@@ -2,9 +2,13 @@ import Joi from "joi";
 import express from "express";
 import dayjs from "dayjs";
 
+import Auth from "partipro-shared/src/middlewares/Auth";
 import WrapAsync from "partipro-shared/src/middlewares/WrapAsync";
 import BodyHandler from "partipro-shared/src/middlewares/BodyHandler";
+import WrapTransactionAsync from "partipro-shared/src/middlewares/WrapTransactionAsync";
+
 import { httpStatusCodes } from "partipro-shared/src/constants";
+import { PlanHsSku } from "partipro-shared/src/models/plan/plan.interface";
 
 import authenticationController from "../controllers/authentication.controller";
 
@@ -40,10 +44,13 @@ authenticationRoute.post(
       email: Joi.string().email().trim().required(),
       password: Joi.string().required(),
       name: Joi.string().required(),
+      plan_hs_sku: Joi.string()
+        .valid(...Object.values(PlanHsSku))
+        .default(PlanHsSku.FREE),
     }),
   ),
-  WrapAsync(async (req, res) => {
-    const token = await authenticationController.register(req.body);
+  WrapTransactionAsync(async (req, res, session) => {
+    const token = await authenticationController.register(req.body, { session });
 
     res
       .cookie("ccToken", token, {
@@ -55,6 +62,14 @@ authenticationRoute.post(
       .json({
         token,
       });
+  }),
+);
+
+authenticationRoute.get(
+  "/auth/logout",
+  Auth,
+  WrapAsync(async (req, res) => {
+    res.status(200).clearCookie("ccToken").send("Token cleared from the cookies.");
   }),
 );
 
