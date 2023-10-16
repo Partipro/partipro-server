@@ -4,6 +4,8 @@ import Joi from "joi";
 import WrapAsync from "partipro-shared/src/middlewares/WrapAsync";
 import { httpStatusCodes } from "partipro-shared/src/constants";
 import BodyHandler from "../../shared/partipro-shared/src/middlewares/BodyHandler";
+import QueryHandler from "partipro-shared/src/middlewares/QueryHandler";
+
 import propertyController from "../controllers/property.controller";
 
 const propertyRoute = express.Router();
@@ -19,11 +21,27 @@ const schema = Joi.object({
 
 propertyRoute.get(
   "/properties",
+  QueryHandler(
+    Joi.object({
+      name: Joi.string(),
+      city: Joi.string(),
+      address: Joi.string(),
+      monthRent: Joi.number(),
+      squareMeters: Joi.number(),
+    }),
+  ),
   WrapAsync(async (req, res) => {
     res.status(httpStatusCodes.OK).json(
       await propertyController.list({
         filters: {
-          owner: req.user.id,
+          ...req.filters,
+          contract: req.user.contract,
+          ...(req.filters.name && {
+            name: {
+              $regex: req.filters.name,
+              $options: "i",
+            },
+          }),
         },
       }),
     );
