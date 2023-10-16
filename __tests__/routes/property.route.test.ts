@@ -53,6 +53,20 @@ describe("when GET /api/v1/properties", () => {
       ]),
     );
   });
+
+  it("Should status 200 and all the properties related to the user that is requesting with filters", async () => {
+    const res = await request("get", "properties", { query: { name: "2" } });
+
+    expect(res.status).toBe(200);
+    expect(res.body.length).toBe(1);
+    expect(res.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: "Property of mine 2",
+        }),
+      ]),
+    );
+  });
 });
 
 describe("When POST /api/v1/properties", () => {
