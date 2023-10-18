@@ -10,6 +10,7 @@ import FileUploadHandler from "partipro-shared/src/middlewares/FileUploadHandler
 
 import propertyController from "../controllers/property.controller";
 import { PropertyType } from "../../shared/partipro-shared/src/models/property/property.interface";
+import NotFoundError from "../../shared/partipro-shared/src/errors/NotFoundError";
 
 const propertyRoute = express.Router();
 
@@ -50,6 +51,19 @@ propertyRoute.get(
         },
       }),
     );
+  }),
+);
+
+propertyRoute.get(
+  "/properties/:id",
+  WrapAsync(async (req, res) => {
+    const property = await propertyController.findById(req.params.id);
+
+    if (!property) {
+      throw new NotFoundError("property_not_found", "Propriedade não encontrada");
+    }
+
+    res.status(httpStatusCodes.OK).json(property);
   }),
 );
 
