@@ -69,10 +69,15 @@ propertyRoute.get(
 
 propertyRoute.post(
   "/properties",
-  FileUploadHandler([{ name: "photo", type: "image" }]),
+  FileUploadHandler([{ name: "image", type: "image" }]),
   BodyHandler(schema),
   WrapAsync(async (req, res) => {
-    const property = await propertyController.insert({ ...req.body, owner: req.user.id, contract: req.user.contract });
+    const property = await propertyController.insert({
+      ...req.body,
+      file: (req.files as Express.Multer.File[])?.find((file) => file.fieldname === "image"),
+      owner: req.user.id,
+      contract: req.user.contract,
+    });
 
     res.status(httpStatusCodes.CREATED).json(property);
   }),

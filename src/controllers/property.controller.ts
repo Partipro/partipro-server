@@ -18,7 +18,7 @@ class PropertyController extends PropertyService {
       throw new BadRequestError("unable_to_create_property", "Não foi possível criar esta propriedade");
     }
 
-    const folder = await FileApi.list({ path: `property/${insertedProperty._id}` });
+    const folder = await FileApi.list({ path: `property/${insertedProperty._id.toString()}` });
     if (folder && folder.Contents?.length) {
       folder.Contents.forEach(async (folderFile) => {
         if (folderFile.Key) {
