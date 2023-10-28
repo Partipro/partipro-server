@@ -4,13 +4,13 @@ import Joi from "joi";
 import { httpStatusCodes } from "partipro-shared/src/constants";
 
 import WrapAsync from "partipro-shared/src/middlewares/WrapAsync";
-import BodyHandler from "../../shared/partipro-shared/src/middlewares/BodyHandler";
+import BodyHandler from "partipro-shared/src/middlewares/BodyHandler";
 import QueryHandler from "partipro-shared/src/middlewares/QueryHandler";
 import FileUploadHandler from "partipro-shared/src/middlewares/FileUploadHandler";
 
 import propertyController from "../controllers/property.controller";
-import { PropertyType } from "../../shared/partipro-shared/src/models/property/property.interface";
-import NotFoundError from "../../shared/partipro-shared/src/errors/NotFoundError";
+import { PropertyType } from "partipro-shared/src/models/property/property.interface";
+import NotFoundError from "partipro-shared/src/errors/NotFoundError";
 
 const propertyRoute = express.Router();
 
