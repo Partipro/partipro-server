@@ -1,7 +1,6 @@
 import request from "../request";
 import Renter from "partipro-shared/src/models/renter/renter.model";
-import Contract from "../../shared/partipro-shared/src/models/contract/contract.model";
-import { PlanHsSku } from "../../shared/partipro-shared/src/models/plan/plan.interface";
+import Contract from "partipro-shared/src/models/contract/contract.model";
 import { IDS } from "partipro-shared/__tests__/setupData";
 
 describe("when GET /api/v1/renters", () => {
