@@ -18,8 +18,8 @@ const createSchema = Joi.object({
 });
 
 const searchSchema = Joi.object({
-  name: Joi.string(),
-  business: Joi.string(),
+  name: Joi.string().allow(null, ""),
+  business: Joi.string().allow(null, ""),
 });
 
 renterRoute.get(
