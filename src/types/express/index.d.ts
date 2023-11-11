@@ -5,5 +5,7 @@ declare namespace Express {
       id: string;
       contract: string;
     };
+    populate: any;
+    filters: any;
   }
 }
