@@ -30,8 +30,8 @@ const createSchema = Joi.object({
 
 const searchSchema = Joi.object({
   ...baseSchema,
-  name: Joi.string(),
-  type: Joi.string().valid(PropertyType.COMMERCIAL, PropertyType.RESIDENTIAL),
+  name: Joi.string().allow(null, ""),
+  type: Joi.string().valid(PropertyType.COMMERCIAL, PropertyType.RESIDENTIAL).allow(null, ""),
 });
 
 propertyRoute.get(
