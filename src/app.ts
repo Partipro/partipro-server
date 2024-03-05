@@ -4,7 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 
 import router from "./routes";
-import ErrorHandler from "partipro-shared/src/middlewares/ErrorHandler";
+import ErrorHandler from "@shared/middlewares/ErrorHandler";
 
 const app: Application = express();
 

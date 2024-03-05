@@ -75,6 +75,13 @@ describe("when GET /api/v1/properties", () => {
 });
 
 describe("When POST /api/v1/properties", () => {
+  beforeEach(async () => {
+    FileApi.list = jest.fn().mockReturnValue({
+      Contents: [],
+    });
+    FileApi.delete = jest.fn();
+    FileApi.upload = jest.fn();
+  });
   test("Should return status 201 and the property when the sent data is correct", async () => {
     const res = await request("post", "properties", {
       data: {

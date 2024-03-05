@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Auth from "partipro-shared/src/middlewares/Auth";
+import Auth from "@shared/middlewares/Auth";
 
 import authenticationRoute from "./authentication.route";
 import userRoute from "./user.route";

@@ -1,5 +1,5 @@
-import RenterService from "partipro-shared/src/services/renter.service";
+import { RenterService as Service } from "@shared/services/renter.service";
 
-class RenterController extends RenterService {}
+class RenterController extends Service {}
 
 export default new RenterController();

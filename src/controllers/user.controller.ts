@@ -1,5 +1,5 @@
-import UserService from "partipro-shared/src/services/user.service";
+import { UserService as Service } from "@shared/services/user.service";
 
-class UserController extends UserService {}
+class UserController extends Service {}
 
 export default new UserController();

@@ -1,18 +1,27 @@
 {
+  "extends": "./tsconfig.paths.json",
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
     "lib": ["es6"],
     "allowJs": true,
     "outDir": "build",
-    "rootDir": "src",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "useUnknownInCatchVariables": false,
     "noImplicitAny": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true
   },
-  "exclude": ["shared", "build", "**/*.test.ts", "jest.config.js", "coverage"],
-  "files": ["./src/index.ts", "./src/types/express/index.d.ts"]
+  "exclude": ["shared", "build", "node_modules/**/*", "jest.config.js", "coverage"],
+  "include": ["src/**/*.ts", "src/*.ts", "src/**/**/*.d.ts"],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
 }
