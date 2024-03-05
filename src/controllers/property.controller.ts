@@ -1,18 +1,12 @@
 import { randomUUID } from "crypto";
-import PropertyService from "partipro-shared/src/services/property.service";
-import { IProperty } from "partipro-shared/src/models/property/property.interface";
-import BadRequestError from "partipro-shared/src/errors/BadRequestError";
-import FileApi from "partipro-shared/src/core/apis/file.api";
+import { PropertyService as Service } from "@shared/services/property.service";
+import { IProperty } from "@shared/models/property/property.interface";
+import BadRequestError from "@shared/errors/BadRequestError";
+import FileApi from "@shared/core/apis/file.api";
 
-class PropertyController extends PropertyService {
-  private propertyService: PropertyService;
-  constructor(propertyService: PropertyService) {
-    super();
-    this.propertyService = propertyService;
-  }
-
+class PropertyController extends Service {
   async insert({ file, ...props }: IProperty & { file?: Express.Multer.File }) {
-    const insertedProperty = await this.propertyService.insert(props);
+    const insertedProperty = await super.insert(props);
 
     if (!insertedProperty) {
       throw new BadRequestError("unable_to_create_property", "Não foi possível criar esta propriedade");
@@ -31,18 +25,18 @@ class PropertyController extends PropertyService {
       const filePath = `property/${insertedProperty._id}/${randomUUID()}.${file.originalname.split(".").pop()}`;
       await FileApi.upload({ key: filePath, data: file.buffer });
 
-      await this.propertyService.update(insertedProperty._id, {
+      await super.update(insertedProperty._id, {
         props: {
           image: filePath,
         },
       });
     }
 
-    return (await this.propertyService.findById(insertedProperty._id)) as IProperty;
+    return (await super.findById(insertedProperty._id)) as IProperty;
   }
 
   async update(id: string, { file, props }: { props: IProperty; file?: Express.Multer.File }) {
-    const property = await this.propertyService.findById(id);
+    const property = await super.findById(id);
 
     if (!property) {
       throw new BadRequestError("unable_to_create_property", "Não foi possível criar esta propriedade");
@@ -63,18 +57,18 @@ class PropertyController extends PropertyService {
       await FileApi.upload({ key: filePath, data: file.buffer });
     }
 
-    await this.propertyService.update(property._id, {
+    await super.update(property._id, {
       props: {
         ...props,
         ...(filePath && { image: filePath }),
       },
     });
 
-    return (await this.propertyService.findById(property._id)) as IProperty;
+    return (await super.findById(property._id)) as IProperty;
   }
 
   async delete(id: string) {
-    const property = await this.propertyService.findById(id);
+    const property = await super.findById(id);
 
     if (!property) {
       throw new BadRequestError("unable_to_create_property", "Não foi possível criar esta propriedade");
@@ -89,8 +83,8 @@ class PropertyController extends PropertyService {
       });
     }
 
-    return this.propertyService.delete(property._id);
+    return super.delete(property._id);
   }
 }
 
-export default new PropertyController(new PropertyService());
+export default new PropertyController();

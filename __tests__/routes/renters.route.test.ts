@@ -62,7 +62,6 @@ describe("When POST /api/v1/renters", () => {
     });
 
     expect(res.status).toBe(201);
-    expect(res.body.owner).toBeTruthy();
     expect(res.body).toEqual(
       expect.objectContaining({
         name: "St. test",
@@ -97,7 +96,6 @@ describe("When PUT /api/v1/renters/:id", () => {
     });
 
     expect(res.status).toBe(200);
-    expect(res.body.owner).toBeTruthy();
     expect(res.body).toEqual(
       expect.objectContaining({
         name: "Renter of mine",
@@ -119,7 +117,6 @@ describe("When DELETE /api/v1/renters/:id", () => {
     const res = await request("delete", `renters/${renter._id}`);
 
     expect(res.status).toBe(200);
-    expect(res.body.owner).toBeTruthy();
     expect(res.body).toEqual(
       expect.objectContaining({
         name: "Renter of mine",

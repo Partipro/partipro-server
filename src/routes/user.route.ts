@@ -1,9 +1,9 @@
 import express from "express";
 
-import WrapAsync from "partipro-shared/src/middlewares/WrapAsync";
-import { httpStatusCodes } from "partipro-shared/src/constants";
+import WrapAsync from "@shared/middlewares/WrapAsync";
+import { httpStatusCodes } from "@shared/constants";
 import userController from "../controllers/user.controller";
-import NotFoundError from "../../shared/partipro-shared/src/errors/NotFoundError";
+import NotFoundError from "@shared/errors/NotFoundError";
 
 const userRoute = express.Router();
 

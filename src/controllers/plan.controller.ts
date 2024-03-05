@@ -1,5 +1,5 @@
-import PlanService from "partipro-shared/src/services/plan.service";
+import { PlanService as Service } from "@shared/services/plan.service";
 
-class PlanController extends PlanService {}
+class PlanController extends Service {}
 
 export default new PlanController();

@@ -1,14 +1,14 @@
 import express from "express";
 import Joi from "joi";
 
-import { httpStatusCodes } from "partipro-shared/src/constants";
+import { httpStatusCodes } from "@shared/constants";
 
-import WrapAsync from "partipro-shared/src/middlewares/WrapAsync";
-import BodyHandler from "partipro-shared/src/middlewares/BodyHandler";
-import QueryHandler from "partipro-shared/src/middlewares/QueryHandler";
+import WrapAsync from "@shared/middlewares/WrapAsync";
+import BodyHandler from "@shared/middlewares/BodyHandler";
+import QueryHandler from "@shared/middlewares/QueryHandler";
 
 import renterController from "../controllers/renter.controller";
-import NotFoundError from "partipro-shared/src/errors/NotFoundError";
+import NotFoundError from "@shared/errors/NotFoundError";
 
 const renterRoute = express.Router();
 
