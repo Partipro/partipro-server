@@ -15,12 +15,12 @@ const renterRoute = express.Router();
 const createSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().required(),
+  password: Joi.string().required(),
   business: Joi.string(),
 });
 
 const searchSchema = Joi.object({
-  name: Joi.string().allow(null, ""),
-  email: Joi.string().allow(null, ""),
+  criteria: Joi.string().allow(null, ""),
   business: Joi.string().allow(null, ""),
 });
 
@@ -38,11 +38,21 @@ renterRoute.get(
               $options: "i",
             },
           }),
-          ...(req.filters.name && {
-            name: {
-              $regex: req.filters.name,
-              $options: "i",
-            },
+          ...(req.filters.criteria && {
+            $or: [
+              {
+                name: {
+                  $regex: req.filters.criteria,
+                  $options: "i",
+                },
+              },
+              {
+                email: {
+                  $regex: req.filters.criteria,
+                  $options: "i",
+                },
+              },
+            ],
           }),
         },
       }),
