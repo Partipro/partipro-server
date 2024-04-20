@@ -7,5 +7,6 @@ declare namespace Express {
     };
     populate: any;
     filters: any;
+    pagination: { page: number; pageSize?: number };
   }
 }
