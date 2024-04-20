@@ -9,6 +9,7 @@ import QueryHandler from "@shared/middlewares/QueryHandler";
 
 import renterController from "../controllers/renter.controller";
 import NotFoundError from "@shared/errors/NotFoundError";
+import { Roles } from "@shared/models/user/user.interface";
 
 const renterRoute = express.Router();
 
@@ -79,6 +80,7 @@ renterRoute.post(
   WrapAsync(async (req, res) => {
     const property = await renterController.insert({
       ...req.body,
+      role: Roles.RENTER,
       contract: req.user.contract,
     });
 
