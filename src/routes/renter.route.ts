@@ -103,7 +103,7 @@ renterRoute.put(
 renterRoute.delete(
   "/renters/:id",
   WrapAsync(async (req, res) => {
-    const renters = await renterController.delete(req.params.id);
+    const renters = await renterController.disable(req.params.id);
 
     res.status(httpStatusCodes.OK).json(renters);
   }),

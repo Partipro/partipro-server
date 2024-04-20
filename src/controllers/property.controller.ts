@@ -74,7 +74,7 @@ class PropertyController extends Service {
       });
     }
 
-    return super.delete(property._id);
+    return super.disable(property._id);
   }
 }
 
