@@ -44,6 +44,7 @@ propertiesContract.post(
     Joi.object({
       property: Joi.string().required(),
       renter: Joi.string().required(),
+      expiresAt: Joi.string().isoDate().required(),
     }),
   ),
   WrapAsync(async (req, res) => {
