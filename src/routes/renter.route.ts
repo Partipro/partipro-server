@@ -18,6 +18,9 @@ const createSchema = Joi.object({
   email: Joi.string().required(),
   password: Joi.string().required(),
   business: Joi.string(),
+  phone: Joi.string(),
+  address: Joi.string(),
+  documentNumber: Joi.string(),
 });
 
 const searchSchema = Joi.object({
