@@ -14,11 +14,13 @@ const renterRoute = express.Router();
 
 const createSchema = Joi.object({
   name: Joi.string().required(),
+  email: Joi.string().required(),
   business: Joi.string(),
 });
 
 const searchSchema = Joi.object({
   name: Joi.string().allow(null, ""),
+  email: Joi.string().allow(null, ""),
   business: Joi.string().allow(null, ""),
 });
 
