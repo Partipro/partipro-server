@@ -4,6 +4,7 @@ declare namespace Express {
       email: string;
       id: string;
       contract: string;
+      role: string;
     };
     populate: any;
     filters: any;
