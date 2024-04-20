@@ -11,6 +11,8 @@ import { PropertyContractStatus } from "@shared/models/propertyContract/property
 import BodyHandler from "@shared/middlewares/BodyHandler";
 import FileUploadHandler from "@shared/middlewares/FileUploadHandler";
 import { Roles } from "@shared/models/user/user.interface";
+import NotFoundError from "@shared/errors/NotFoundError";
+import dayjs from "dayjs";
 
 const propertiesContract = express.Router();
 
@@ -59,6 +61,26 @@ propertiesContract.post(
         ...req.body,
         document: (req.files as Express.Multer.File[])?.find((file) => file.fieldname === "document"),
         contract: req.user.contract,
+      }),
+    );
+  }),
+);
+
+propertiesContract.patch(
+  "/properties-contracts/:id/cancel",
+  WrapAsync(async (req, res) => {
+    const contract = await propertyContractController.findById(req.params.id);
+
+    if (!contract) {
+      throw new NotFoundError("contract_not_found", "Contract not found");
+    }
+
+    res.status(httpStatusCodes.OK).json(
+      await propertyContractController.update(contract._id, {
+        props: {
+          status: PropertyContractStatus.CANCELED,
+          canceledAt: dayjs().format(),
+        },
       }),
     );
   }),
