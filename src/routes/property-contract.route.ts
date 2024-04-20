@@ -1,5 +1,6 @@
 import Joi from "joi";
 import express from "express";
+import { Types } from "mongoose";
 
 import PageHandler from "@shared/middlewares/PageHandler";
 import WrapAsync from "@shared/middlewares/WrapAsync";
@@ -34,7 +35,7 @@ propertiesContract.get(
         populate: [{ path: "property" }, { path: "renter" }],
         filters: {
           ...req.filters,
-          contract: req.user.contract,
+          contract: new Types.ObjectId(req.user.contract),
           ...(req.user.role === Roles.RENTER ? { renter: req.user.id } : {}),
         },
       }),
