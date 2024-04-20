@@ -1,23 +1,29 @@
 import request from "../request";
-import Renter from "partipro-shared/src/models/renter/renter.model";
 import Contract from "partipro-shared/src/models/contract/contract.model";
 import { IDS } from "partipro-shared/__tests__/setupData";
+import User from "../../shared/partipro-shared/src/models/user/user.model";
 
 describe("when GET /api/v1/renters", () => {
   beforeEach(async () => {
     const anotherUserContract = await new Contract({
       socialReason: "Another guy",
     }).save();
-    await new Renter({
+    await new User({
       name: "Renter of user 1",
+      email: "renterofmine1@test.com",
+      role: "RENTER",
       contract: anotherUserContract._id,
     }).save();
-    await new Renter({
+    await new User({
       name: "Renter of mine",
+      email: "renterofmine@test.com",
+      role: "RENTER",
       contract: IDS.CONTRACT,
     }).save();
-    await new Renter({
+    await new User({
       name: "Renter of mine 2",
+      email: "renterofmine2@test.com",
+      role: "RENTER",
       contract: IDS.CONTRACT,
     }).save();
   });
@@ -58,6 +64,8 @@ describe("When POST /api/v1/renters", () => {
     const res = await request("post", "renters", {
       data: {
         name: "St. test",
+        password: "123456",
+        email: "sttest@test.com",
       },
     });
 
@@ -65,6 +73,7 @@ describe("When POST /api/v1/renters", () => {
     expect(res.body).toEqual(
       expect.objectContaining({
         name: "St. test",
+        role: "RENTER",
       }),
     );
   });
@@ -73,6 +82,8 @@ describe("When POST /api/v1/renters", () => {
     const res = await request("post", "renters", {
       data: {
         business: "clothes",
+        password: "123456",
+        email: "clothes@test.com",
       },
     });
 
@@ -83,8 +94,10 @@ describe("When POST /api/v1/renters", () => {
 describe("When PUT /api/v1/renters/:id", () => {
   let renter: any;
   beforeEach(async () => {
-    renter = await new Renter({
+    renter = await new User({
       name: "Renter of mine",
+      email: "Renterfmine@test.com",
+      role: "RENTER",
       contract: IDS.CONTRACT,
     }).save();
   });
@@ -108,8 +121,10 @@ describe("When PUT /api/v1/renters/:id", () => {
 describe("When DELETE /api/v1/renters/:id", () => {
   let renter: any;
   beforeEach(async () => {
-    renter = await new Renter({
+    renter = await new User({
       name: "Renter of mine",
+      email: "sg@test.com",
+      role: "RENTER",
       contract: IDS.CONTRACT,
     }).save();
   });
