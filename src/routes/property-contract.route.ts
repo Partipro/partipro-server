@@ -9,6 +9,7 @@ import propertyContractController from "../controllers/property-contract.control
 import { PropertyContractStatus } from "@shared/models/propertyContract/propertyContract.interface";
 import BodyHandler from "@shared/middlewares/BodyHandler";
 import FileUploadHandler from "@shared/middlewares/FileUploadHandler";
+import { Roles } from "@shared/models/user/user.interface";
 
 const propertiesContract = express.Router();
 
@@ -31,7 +32,11 @@ propertiesContract.get(
       await propertyContractController.paginate({
         ...req.pagination,
         populate: [{ path: "property" }, { path: "renter" }],
-        filters: req.filters,
+        filters: {
+          ...req.filters,
+          contract: req.user.contract,
+          ...(req.user.role === Roles.RENTER ? { renter: req.user.id } : {}),
+        },
       }),
     );
   }),
