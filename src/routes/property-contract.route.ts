@@ -40,6 +40,7 @@ propertiesContract.get(
           contract: new Types.ObjectId(req.user.contract),
           ...(req.user.role === Roles.RENTER ? { renter: req.user.id } : {}),
         },
+        sort: { canceledAt: 1, signedAt: -1 } as any,
       }),
     );
   }),
