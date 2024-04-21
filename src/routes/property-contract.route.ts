@@ -1,4 +1,5 @@
 import Joi from "joi";
+import dayjs from "dayjs";
 import express from "express";
 import { Types } from "mongoose";
 
@@ -12,7 +13,6 @@ import BodyHandler from "@shared/middlewares/BodyHandler";
 import FileUploadHandler from "@shared/middlewares/FileUploadHandler";
 import { Roles } from "@shared/models/user/user.interface";
 import NotFoundError from "@shared/errors/NotFoundError";
-import dayjs from "dayjs";
 
 const propertiesContract = express.Router();
 
