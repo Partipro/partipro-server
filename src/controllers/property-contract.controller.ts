@@ -26,7 +26,7 @@ class PropertyContractController extends Service {
       .pop()}`;
     await FileApi.upload({ key: filePath, data: document.buffer });
 
-    const clicksignResponse = await clicksignEnvelopApi.createEnvelope({
+    const clicksignResponse = await clicksignEnvelopApi.create({
       name: document.originalname,
       fileBuffer: document.buffer,
       signerEmail: renter.email,

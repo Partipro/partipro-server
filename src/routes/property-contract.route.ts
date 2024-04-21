@@ -13,6 +13,7 @@ import BodyHandler from "@shared/middlewares/BodyHandler";
 import FileUploadHandler from "@shared/middlewares/FileUploadHandler";
 import { Roles } from "@shared/models/user/user.interface";
 import NotFoundError from "@shared/errors/NotFoundError";
+import { clicksignEnvelopApi } from "@shared/core/apis/clicksign.api";
 
 const propertiesContract = express.Router();
 
@@ -84,6 +85,23 @@ propertiesContract.patch(
         },
       }),
     );
+  }),
+);
+
+propertiesContract.head(
+  "/properties-contracts/:id/send",
+  WrapAsync(async (req, res) => {
+    const contract = await propertyContractController.findById(req.params.id);
+
+    if (!contract) {
+      throw new NotFoundError("contract_not_found", "Contract not found");
+    }
+
+    await clicksignEnvelopApi.send({
+      envelopeId: contract.clicksignEnvelopeId as string,
+    });
+
+    res.sendStatus(200);
   }),
 );
 
