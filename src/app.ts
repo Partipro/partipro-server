@@ -17,7 +17,7 @@ app.use(
   "/api/v1",
   cors({
     credentials: true,
-    origin: ["http://localhost:5173"],
+    origin: true,
   }),
   router,
 );

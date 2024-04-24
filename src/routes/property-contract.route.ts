@@ -28,6 +28,7 @@ propertiesContract.get(
         PropertyContractStatus.ACTIVE,
         PropertyContractStatus.EXPIRED,
         PropertyContractStatus.AWAITING_SIGN,
+        PropertyContractStatus.DRAFT,
       ),
     }),
   ),
@@ -99,6 +100,12 @@ propertiesContract.head(
 
     await clicksignEnvelopApi.send({
       envelopeId: contract.clicksignEnvelopeId as string,
+    });
+
+    await propertyContractController.update(contract._id, {
+      props: {
+        status: PropertyContractStatus.AWAITING_SIGN,
+      },
     });
 
     res.sendStatus(200);

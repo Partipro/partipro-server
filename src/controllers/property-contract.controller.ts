@@ -9,7 +9,7 @@ import RenterController from "./renter.controller";
 
 class PropertyContractController extends Service {
   async insert({ document, ...props }: IPropertyContract & { document: Express.Multer.File }) {
-    const insertedContract = await super.insert({ ...props, status: PropertyContractStatus.AWAITING_SIGN });
+    const insertedContract = await super.insert({ ...props, status: PropertyContractStatus.DRAFT });
 
     if (!insertedContract) {
       throw new BadRequestError("unable_to_create_property-document", "Não foi possível criar este contrato");
