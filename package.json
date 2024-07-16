@@ -5,8 +5,8 @@
   "main": "src",
   "scripts": {
     "start": "TZ=UTC npx ts-node src/index.ts --watch",
-    "test": "jest --coverage",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "npx jest --config=jest.config.js"
   },
   "keywords": [],
   "author": "",

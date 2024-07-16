@@ -12,15 +12,6 @@ class PropertyController extends Service {
       throw new BadRequestError("unable_to_create_property", "Não foi possível criar esta propriedade");
     }
 
-    const folder = await FileApi.list({ path: `property/${insertedProperty._id.toString()}` });
-    if (folder && folder.Contents?.length) {
-      folder.Contents.forEach(async (folderFile) => {
-        if (folderFile.Key) {
-          await FileApi.delete({ key: folderFile.Key });
-        }
-      });
-    }
-
     if (file) {
       const filePath = `property/${insertedProperty._id}/${randomUUID()}.${file.originalname.split(".").pop()}`;
       await FileApi.upload({ key: filePath, data: file.buffer });
@@ -83,7 +74,7 @@ class PropertyController extends Service {
       });
     }
 
-    return super.delete(property._id);
+    return super.disable(property._id);
   }
 }
 

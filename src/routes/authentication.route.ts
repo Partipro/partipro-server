@@ -11,6 +11,7 @@ import { httpStatusCodes } from "@shared/constants";
 import { PlanHsSku } from "@shared/models/plan/plan.interface";
 
 import authenticationController from "../controllers/authentication.controller";
+import { Roles } from "@shared/models/user/user.interface";
 
 const authenticationRoute = express.Router();
 
@@ -50,7 +51,7 @@ authenticationRoute.post(
     }),
   ),
   WrapTransactionAsync(async (req, res, session) => {
-    const token = await authenticationController.register(req.body, { session });
+    const token = await authenticationController.register({ ...req.body, role: Roles.ADMIN }, { session });
 
     res
       .cookie("ccToken", token, {

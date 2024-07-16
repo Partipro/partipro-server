@@ -1,23 +1,33 @@
 import request from "../request";
-import Renter from "partipro-shared/src/models/renter/renter.model";
 import Contract from "partipro-shared/src/models/contract/contract.model";
 import { IDS } from "partipro-shared/__tests__/setupData";
+import User from "../../shared/partipro-shared/src/models/user/user.model";
+import { Roles } from "../../shared/partipro-shared/src/models/user/user.interface";
 
 describe("when GET /api/v1/renters", () => {
   beforeEach(async () => {
     const anotherUserContract = await new Contract({
       socialReason: "Another guy",
     }).save();
-    await new Renter({
+    await new User({
       name: "Renter of user 1",
+      email: "renterofmine1@test.com",
+      role: Roles.RENTER,
+      password: "123",
       contract: anotherUserContract._id,
     }).save();
-    await new Renter({
+    await new User({
       name: "Renter of mine",
+      email: "renterofmine@test.com",
+      role: Roles.RENTER,
+      password: "123",
       contract: IDS.CONTRACT,
     }).save();
-    await new Renter({
+    await new User({
       name: "Renter of mine 2",
+      password: "123",
+      email: "renterofmine2@test.com",
+      role: Roles.RENTER,
       contract: IDS.CONTRACT,
     }).save();
   });
@@ -39,7 +49,7 @@ describe("when GET /api/v1/renters", () => {
   });
 
   it("Should status 200 and all the renters related to the user that is requesting with filters", async () => {
-    const res = await request("get", "renters", { query: { name: "2" } });
+    const res = await request("get", "renters", { query: { criteria: "2" } });
 
     expect(res.status).toBe(200);
     expect(res.body.length).toBe(1);
@@ -58,6 +68,8 @@ describe("When POST /api/v1/renters", () => {
     const res = await request("post", "renters", {
       data: {
         name: "St. test",
+        password: "123456",
+        email: "sttest@test.com",
       },
     });
 
@@ -65,6 +77,7 @@ describe("When POST /api/v1/renters", () => {
     expect(res.body).toEqual(
       expect.objectContaining({
         name: "St. test",
+        role: "RENTER",
       }),
     );
   });
@@ -73,6 +86,8 @@ describe("When POST /api/v1/renters", () => {
     const res = await request("post", "renters", {
       data: {
         business: "clothes",
+        password: "123456",
+        email: "clothes@test.com",
       },
     });
 
@@ -83,8 +98,11 @@ describe("When POST /api/v1/renters", () => {
 describe("When PUT /api/v1/renters/:id", () => {
   let renter: any;
   beforeEach(async () => {
-    renter = await new Renter({
+    renter = await new User({
       name: "Renter of mine",
+      email: "Renterfmine@test.com",
+      role: Roles.RENTER,
+      password: "123",
       contract: IDS.CONTRACT,
     }).save();
   });
@@ -108,8 +126,11 @@ describe("When PUT /api/v1/renters/:id", () => {
 describe("When DELETE /api/v1/renters/:id", () => {
   let renter: any;
   beforeEach(async () => {
-    renter = await new Renter({
+    renter = await new User({
       name: "Renter of mine",
+      email: "sg@test.com",
+      password: "123",
+      role: Roles.RENTER,
       contract: IDS.CONTRACT,
     }).save();
   });

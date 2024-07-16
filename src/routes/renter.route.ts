@@ -9,16 +9,22 @@ import QueryHandler from "@shared/middlewares/QueryHandler";
 
 import renterController from "../controllers/renter.controller";
 import NotFoundError from "@shared/errors/NotFoundError";
+import { Roles } from "@shared/models/user/user.interface";
 
 const renterRoute = express.Router();
 
 const createSchema = Joi.object({
   name: Joi.string().required(),
+  email: Joi.string().required(),
+  password: Joi.string().required(),
   business: Joi.string(),
+  phone: Joi.string(),
+  address: Joi.string(),
+  documentNumber: Joi.string(),
 });
 
 const searchSchema = Joi.object({
-  name: Joi.string().allow(null, ""),
+  criteria: Joi.string().allow(null, ""),
   business: Joi.string().allow(null, ""),
 });
 
@@ -36,11 +42,21 @@ renterRoute.get(
               $options: "i",
             },
           }),
-          ...(req.filters.name && {
-            name: {
-              $regex: req.filters.name,
-              $options: "i",
-            },
+          ...(req.filters.criteria && {
+            $or: [
+              {
+                name: {
+                  $regex: req.filters.criteria,
+                  $options: "i",
+                },
+              },
+              {
+                email: {
+                  $regex: req.filters.criteria,
+                  $options: "i",
+                },
+              },
+            ],
           }),
         },
       }),
@@ -67,6 +83,7 @@ renterRoute.post(
   WrapAsync(async (req, res) => {
     const property = await renterController.insert({
       ...req.body,
+      role: Roles.RENTER,
       contract: req.user.contract,
     });
 
@@ -89,7 +106,7 @@ renterRoute.put(
 renterRoute.delete(
   "/renters/:id",
   WrapAsync(async (req, res) => {
-    const renters = await renterController.delete(req.params.id);
+    const renters = await renterController.disable(req.params.id);
 
     res.status(httpStatusCodes.OK).json(renters);
   }),

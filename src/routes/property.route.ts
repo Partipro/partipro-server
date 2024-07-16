@@ -101,7 +101,7 @@ propertyRoute.put(
 propertyRoute.delete(
   "/properties/:id",
   WrapAsync(async (req, res) => {
-    const property = await propertyController.delete(req.params.id);
+    const property = await propertyController.disable(req.params.id);
 
     res.status(httpStatusCodes.OK).json(property);
   }),
