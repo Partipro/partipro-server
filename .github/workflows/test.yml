@@ -13,6 +13,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Fetch partipro-shared repository
+      run: mkdir shared && cd shared && git clone git@github.com:Partipro/partipro-shared.git && cd..
+
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
