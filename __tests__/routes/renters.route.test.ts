@@ -2,6 +2,7 @@ import request from "../request";
 import Contract from "partipro-shared/src/models/contract/contract.model";
 import { IDS } from "partipro-shared/__tests__/setupData";
 import User from "../../shared/partipro-shared/src/models/user/user.model";
+import { Roles } from "../../shared/partipro-shared/src/models/user/user.interface";
 
 describe("when GET /api/v1/renters", () => {
   beforeEach(async () => {
@@ -11,19 +12,22 @@ describe("when GET /api/v1/renters", () => {
     await new User({
       name: "Renter of user 1",
       email: "renterofmine1@test.com",
-      role: "RENTER",
+      role: Roles.RENTER,
+      password: "123",
       contract: anotherUserContract._id,
     }).save();
     await new User({
       name: "Renter of mine",
       email: "renterofmine@test.com",
-      role: "RENTER",
+      role: Roles.RENTER,
+      password: "123",
       contract: IDS.CONTRACT,
     }).save();
     await new User({
       name: "Renter of mine 2",
+      password: "123",
       email: "renterofmine2@test.com",
-      role: "RENTER",
+      role: Roles.RENTER,
       contract: IDS.CONTRACT,
     }).save();
   });
@@ -45,7 +49,7 @@ describe("when GET /api/v1/renters", () => {
   });
 
   it("Should status 200 and all the renters related to the user that is requesting with filters", async () => {
-    const res = await request("get", "renters", { query: { name: "2" } });
+    const res = await request("get", "renters", { query: { criteria: "2" } });
 
     expect(res.status).toBe(200);
     expect(res.body.length).toBe(1);
@@ -97,7 +101,8 @@ describe("When PUT /api/v1/renters/:id", () => {
     renter = await new User({
       name: "Renter of mine",
       email: "Renterfmine@test.com",
-      role: "RENTER",
+      role: Roles.RENTER,
+      password: "123",
       contract: IDS.CONTRACT,
     }).save();
   });
@@ -124,7 +129,8 @@ describe("When DELETE /api/v1/renters/:id", () => {
     renter = await new User({
       name: "Renter of mine",
       email: "sg@test.com",
-      role: "RENTER",
+      password: "123",
+      role: Roles.RENTER,
       contract: IDS.CONTRACT,
     }).save();
   });

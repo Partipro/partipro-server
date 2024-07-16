@@ -5,6 +5,7 @@ import { IDS } from "partipro-shared/__tests__/setupData";
 import Contract from "partipro-shared/src/models/contract/contract.model";
 import { PropertyType } from "partipro-shared/src/models/property/property.interface";
 import FileApi from "partipro-shared/src/core/apis/file.api";
+import { Roles } from "../../shared/partipro-shared/src/models/user/user.interface";
 
 describe("when GET /api/v1/properties", () => {
   beforeEach(async () => {
@@ -14,6 +15,7 @@ describe("when GET /api/v1/properties", () => {
     const user1 = await new User({
       name: "User 1",
       password: "123",
+      role: Roles.ADMIN,
       email: "user1@test.com",
       contract: contract1._id,
     }).save();
